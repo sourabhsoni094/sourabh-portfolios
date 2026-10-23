@@ -1,0 +1,81 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ---------- Preloader ----------
+.pre {
+  position: fixed; inset: 0; z-index: 10000; background: $bg; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  &__word { display: flex; font-family: $font-display; font-weight: 800; font-size: clamp(22px, 6.8vw, 84px); letter-spacing: -0.03em; white-space: nowrap; }
+  &__mask { display: inline-block; overflow: hidden; }
+  &__char { display: inline-block; }
+  &__foot {
+    position: absolute; left: var(--gutter); right: var(--gutter); bottom: max(24px, env(safe-area-inset-bottom, 24px));
+    display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center;
+    @include down(sm) { gap: 10px; font-size: 10px; }
+  }
+  &__bar { height: 1px; background: $line; i { display: block; height: 100%; background: $orange; transform: scaleX(0); transform-origin: left; } }
+}
+
+// ---------- Cursor ----------
+.cursor {
+  &__pos { position: fixed; left: 0; top: 0; z-index: 9999; pointer-events: none; }
+  &__dot { width: 6px; height: 6px; border-radius: 50%; background: $fg; transform: translate(-50%, -50%); mix-blend-mode: difference; }
+  &__ring {
+    transform: translate(-50%, -50%); border: 1px solid rgba(243, 239, 230, 0.6); border-radius: 50%; display: grid; place-items: center;
+    mix-blend-mode: difference; background: transparent; transition: background 0.3s, border-color 0.3s;
+    span { font-family: $font-mono; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+    &.is-label { mix-blend-mode: normal; background: $orange; border-color: $orange; color: $bg; }
+    &.is-link { background: rgba(243, 239, 230, 0.12); }
+  }
+}
+
+// ---------- Header + menu ----------
+.header {
+  position: fixed; inset: 0 0 auto 0; z-index: 80; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  padding: 16px var(--gutter);
+  padding-top: max(16px, env(safe-area-inset-top, 16px));
+  transition: transform 0.7s $ease; mix-blend-mode: difference;
+  @include up(md) { padding: 22px var(--gutter); }
+  &.is-hidden { transform: translateY(-110%); }
+  &__logo { font-family: $font-display; font-weight: 800; font-size: 18px; letter-spacing: -0.03em; @include up(md) { font-size: 20px; } i { color: $orange; font-style: normal; } }
+  &__status { @include down(md) { display: none; } color: $fg; }
+  &__menu {
+    justify-self: end; grid-column: 3; display: inline-flex; align-items: center; gap: 10px; padding: 8px 16px; border: 1px solid $line; border-radius: 999px;
+    font-family: $font-mono; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; min-height: 38px;
+    @include up(md) { gap: 12px; padding: 10px 18px; font-size: 12px; min-height: 42px; }
+    i { width: 14px; height: 6px; border-block: 1px solid currentColor; transition: transform 0.4s $ease; &.is-open { transform: rotate(90deg); } }
+    &:hover { background: $fg; color: $bg; }
+  }
+}
+.menu {
+  position: fixed; inset: 0; z-index: 70; background: $bg; display: flex; flex-direction: column; justify-content: space-between;
+  padding: max(84px, calc(env(safe-area-inset-top, 0px) + 72px)) var(--gutter) max(28px, env(safe-area-inset-bottom, 24px));
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  ul { display: grid; gap: 8px; margin: auto 0; }
+  li { overflow: hidden; }
+  a {
+    display: flex; align-items: baseline; gap: 16px; @include display-type; font-size: clamp(34px, 10vw, 120px); padding: 6px 0; transition: color 0.3s;
+    &:hover { color: $orange; }
+    .mono { font-size: 11px; @include up(md) { font-size: 12px; } }
+  }
+  &__foot {
+    position: static; margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px 24px;
+    font-size: 12px;
+    a { display: inline; font: inherit; padding: 0; &:hover { color: $fg; } }
+  }
+}
+
+// ---------- Buttons / tags ----------
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 20px; border: 1px solid $line; border-radius: 999px;
+  font-size: 13px; min-height: 44px; position: relative; overflow: hidden; isolation: isolate;
+  transition: color 0.4s $ease, border-color 0.4s;
+  @include up(md) { gap: 12px; padding: 14px 24px; font-size: 14px; }
+  &::before { content: ''; position: absolute; inset: 0; background: $fg; transform: translateY(101%); border-radius: 50% 50% 0 0; transition: transform 0.6s $ease, border-radius 0.6s $ease; z-index: -1; }
+  &:hover { color: $bg; border-color: $fg; &::before { transform: none; border-radius: 0; } }
+  i { font-style: normal; }
+}
+.tags {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  @include up(md) { gap: 8px; }
+  span { padding: 4px 10px; border: 1px solid $line; border-radius: 999px; font-size: 11px; color: $muted; @include up(md) { padding: 5px 12px; font-size: 12px; } }
+}

@@ -1,0 +1,17 @@
+@use 'sass:map';
+@use 'variables' as *;
+
+@mixin up($key) { @media (min-width: map.get($breakpoints, $key)) { @content; } }
+@mixin down($key) { @media (max-width: map.get($breakpoints, $key) - 1px) { @content; } }
+
+// fluid size between two viewport widths (360 -> 1440)
+@function fluid($min, $max) {
+  @return clamp(#{$min}px, calc(#{$min}px + #{$max - $min} * ((100vw - 360px) / 1080)), #{$max}px);
+}
+
+@mixin mono-label {
+  font-family: $font-mono; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: $muted;
+}
+@mixin display-type {
+  font-family: $font-display; font-weight: 800; letter-spacing: -0.04em; line-height: 0.9; text-transform: uppercase;
+}
