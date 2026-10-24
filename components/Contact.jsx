@@ -35,7 +35,7 @@ export default function Contact() {
 
       <footer className="footer mono">
         <span>© {new Date().getFullYear()} {profile.name}</span>
-        <span>Next.js · GSAP · Three.js · Framer Motion · Locomotive + Lenis</span>
+        {/* <span>Next.js · GSAP · Three.js · Framer Motion · Locomotive + Lenis</span> */}
         <button className="link" onClick={() => loco?.scrollTo(0, { duration: 2 })}>Back to top ↑</button>
       </footer>
     </section>
